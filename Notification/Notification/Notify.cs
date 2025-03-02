@@ -13,6 +13,7 @@ namespace Notification
         private Notify.enmAction action;
         private int x, y;
         private static List<Notify> activeNotifications = new List<Notify>();
+
         public enum enmAction
         {
             wait,
@@ -65,28 +66,6 @@ namespace Notification
             }
         }
 
-
-        private async Task UpdatePos()
-        {
-            int padding = 5;
-            int verticalOffset = 5;
-
-            for (int i = 0; i < activeNotifications.Count; i++)
-            {
-                Notify notify = activeNotifications[i];
-                int targetTop = verticalOffset + (notify.Height + padding) * i;
-
-                while (notify.Top > targetTop)
-                {
-                    notify.Top -= 5;
-                    await Task.Delay(10);
-                }
-
-                notify.Top = targetTop;
-                notify.y = notify.Top;
-            }
-        }
-
         private async void timershow_Tick(object sender, EventArgs e)
         {
             switch (this.action)
@@ -125,6 +104,27 @@ namespace Notification
                         base.Close();
                     }
                     break;
+            }
+        }
+
+        private async Task UpdatePos()
+        {
+            int padding = 5;
+            int verticalOffset = 5;
+
+            for (int i = 0; i < activeNotifications.Count; i++)
+            {
+                Notify notify = activeNotifications[i];
+                int targetTop = verticalOffset + (notify.Height + padding) * i;
+
+                while (notify.Top > targetTop)
+                {
+                    notify.Top -= 5;
+                    await Task.Delay(10);
+                }
+
+                notify.Top = targetTop;
+                notify.y = notify.Top;
             }
         }
 
